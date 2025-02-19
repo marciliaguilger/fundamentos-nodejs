@@ -8,3 +8,10 @@ Stateful = Informações são salvas em memóriam, se a aplicação for restarta
 Stateless = Não salva nada em memória (bancos de dados por exemplo)
 
 Esta api é do tipo stateful.
+
+################################
+
+# Streams no node.js
+
+- Readable stream
+- Writable stream
