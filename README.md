@@ -15,3 +15,5 @@ Esta api é do tipo stateful.
 
 - Readable stream
 - Writable stream
+
+# O que é o buffer: representação de um espaço na memória do computador, feito para transitar rapidos de uma forma rápida...Permite salvar e ler da memória de forma muito performática. A leitura é feita de forma parcial de forma binária.
