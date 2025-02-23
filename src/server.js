@@ -1,45 +1,24 @@
 // CommonJs => require (padrão de importação)
 //const http = require('hhtp');
-
 //ESModule => import/export (não suporta por padrão, precisa adicionar o type no package.json)
 import http from 'node:http';
-import { randomUUID } from 'node:crypto';
 import { json } from './middlewares/json.js';
-import { Database } from './database.js';
-
-const database = new Database
+import { Routes } from './routes.js'
 
 const server = http.createServer(async(req, res) => {
     const { method, url} = req 
     await json(req, res)
 
-    if (method === 'GET' && url ==='/users'){
-        const users = database.select('users')
-        console.log(users)
-        
-        return res.end(JSON.stringify(users));
-    }
-    
-    if (method === 'POST' && url ==='/users'){
-        
-        const {name, email} = req.body
+    const route = Routes.find(route => {
+        return route.method === method && route.path === url
+    })
 
-        const user = {
-            id: randomUUID(),
-            name: name,
-            email: email
-        }
-
-        database.insert('users', user)
-        console.log('base')
-        
-        res.statusCode = 201
-        return res.end()
+    if(route) {
+        return route.handler(req, res)
     }
-    
-    return res
-    .statusCode(404)
-    .end()
+
+    res.statusCode = 404
+    return res.end()
 
 })
 
