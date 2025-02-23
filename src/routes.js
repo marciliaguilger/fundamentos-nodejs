@@ -37,14 +37,11 @@ export const Routes = [
         method: 'DELETE',
         handler: (req, res) => {
             const { id } = req.params
-
-            const user = database.select('users').find(user => user.id === id)
-            if (!user) {
-                res.statusCode = 404
-                return res.end()
-            }
-
-            return res.end(JSON.stringify(user));
+            
+            database.delete('users', id)
+            
+            res.statusCode = 204
+            return res.end();
         }
     }
 ]
