@@ -8,7 +8,6 @@ export async function json(req, res) {
     
     try{
         req.body = JSON.parse(Buffer.concat(buffers).toString())
-        console.log('oi')
     }
     catch{
         req.body = null
@@ -16,5 +15,5 @@ export async function json(req, res) {
 
     res
         .setHeader('Content-type', 'application/json')
-        .end(JSON.stringify(users))
+        //.end(JSON.stringify(req.body))
 }

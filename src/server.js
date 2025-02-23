@@ -3,36 +3,42 @@
 
 //ESModule => import/export (não suporta por padrão, precisa adicionar o type no package.json)
 import http from 'node:http';
+import { randomUUID } from 'node:crypto';
 import { json } from './middlewares/json.js';
+import { Database } from './database.js';
 
-const users = []
+const database = new Database
 
 const server = http.createServer(async(req, res) => {
     const { method, url} = req 
-    console.log(method, url)
-
     await json(req, res)
 
     if (method === 'GET' && url ==='/users'){
-        return res
+        const users = database.select('users')
+        console.log(users)
+        
+        return res.end(JSON.stringify(users));
     }
     
     if (method === 'POST' && url ==='/users'){
         
         const {name, email} = req.body
 
-        users.push({
-            id: 1,
+        const user = {
+            id: randomUUID(),
             name: name,
             email: email
-        })
-        return res
-        .writeHead(201)
-        .end()
+        }
+
+        database.insert('users', user)
+        console.log('base')
+        
+        res.statusCode = 201
+        return res.end()
     }
     
     return res
-    .writeHead(404)
+    .statusCode(404)
     .end()
 
 })
